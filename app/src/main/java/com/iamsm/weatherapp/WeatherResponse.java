@@ -284,8 +284,7 @@ class List {
 class Main {
 
     @SerializedName("temp")
-    @Expose
-    private Double temp;
+    public Double temp;
     @SerializedName("temp_min")
     @Expose
     private Double tempMin;

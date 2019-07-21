@@ -36,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static String BaseUrl="http://api.openweathermap.org";
+    public static String BaseUrl="https://api.openweathermap.org/";
     public static String AppId="4d99b523e2324aec5e0614b53d564e1d";
     public static int id=1275004;
 
@@ -137,8 +137,10 @@ public class MainActivity extends AppCompatActivity
                 {
                     WeatherResponse weatherResponse=response.body();
                     assert weatherResponse != null;
-                    String string= "City: " +
-                            weatherResponse.city.getCoord();
+                    StringBuffer stringBuffer=new StringBuffer( "City: " +
+                            weatherResponse.city.getName()+
+                            "Country:"+ weatherResponse.city.getCountry());
+                    String string=stringBuffer.toString();
                     mytest_text.setText(string);
 
                 }
