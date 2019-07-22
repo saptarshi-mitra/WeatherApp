@@ -10,4 +10,5 @@ public interface WeatherService {
 
     @GET("data/2.5/forecast?")
     Call<WeatherResponse> getTemp(@Query("id") int id, @Query("APPID") String appid);
+
 }

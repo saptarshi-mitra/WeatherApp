@@ -24,6 +24,10 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private TextView mytest_text;
-    private Button testbutton;
+    private TextView day1,day2,day3,day4,day5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +63,12 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         //Starting code
-        mytest_text=findViewById(R.id.mytest_text);
-        testbutton=findViewById(R.id.button);
+        mytest_text=findViewById(R.id.curr_weather);
+        day1=findViewById(R.id.weather_day1);
+        day2=findViewById(R.id.weather_day2);
+        day3=findViewById(R.id.weather_day3);
+        day4=findViewById(R.id.weather_day4);
+        day5=findViewById(R.id.weather_day5);
 
     }
 
@@ -137,11 +145,85 @@ public class MainActivity extends AppCompatActivity
                 {
                     WeatherResponse weatherResponse=response.body();
                     assert weatherResponse != null;
-                    StringBuffer stringBuffer=new StringBuffer(
-                            "TEMP: "+weatherResponse.list.get(1).getMain().getTemp());
+                    Date now = new Date();
+                    Calendar calendar=Calendar.getInstance();
+                    calendar.setTime(now);
 
-                    String string=stringBuffer.toString();
-                    mytest_text.setText(string);
+                    //for day1 forecast
+
+                    List<Double> list_max=new ArrayList<>();
+                    List<Double> list_min=new ArrayList<>();
+                    for(int i=0;i<8;i++){
+                        list_max.add(weatherResponse.list.get(i).getMain().getTempMax());
+                        list_min.add(weatherResponse.list.get(i).getMain().getTempMin());
+                    }
+                    int maxtemp=max_temp(list_max);
+                    int mintemp=min_temp(list_min);
+
+                    int week=calendar.get(calendar.DAY_OF_WEEK);
+                    String day=day_of_week(week);
+                    //for day1 forecast
+                    day1.setText(day + " : " + maxtemp+ "/" + mintemp);
+
+                    //for day2 forecast
+
+                    list_max.clear();
+                    list_min.clear();
+                    for(int i=8;i<16;i++){
+                        list_max.add(weatherResponse.list.get(i).getMain().getTempMax());
+                        list_min.add(weatherResponse.list.get(i).getMain().getTempMin());
+                    }
+                    maxtemp=max_temp(list_max);
+                    mintemp=min_temp(list_min);
+
+                    week++;
+                    day=day_of_week(week);
+                    day2.setText(day + " : " + maxtemp+ "/" + mintemp);
+
+                    //for day3 forecast
+
+                    list_max.clear();
+                    list_min.clear();
+                    for(int i=16;i<24;i++){
+                        list_max.add(weatherResponse.list.get(i).getMain().getTempMax());
+                        list_min.add(weatherResponse.list.get(i).getMain().getTempMin());
+                    }
+                    maxtemp=max_temp(list_max);
+                    mintemp=min_temp(list_min);
+
+                    week++;
+                    day=day_of_week(week);
+                    day3.setText(day + " : " + maxtemp+ "/" + mintemp);
+
+                    //for day4 forecast
+
+                    list_max.clear();
+                    list_min.clear();
+                    for(int i=24;i<32;i++){
+                        list_max.add(weatherResponse.list.get(i).getMain().getTempMax());
+                        list_min.add(weatherResponse.list.get(i).getMain().getTempMin());
+                    }
+                    maxtemp=max_temp(list_max);
+                    mintemp=min_temp(list_min);
+
+                    week++;
+                    day=day_of_week(week);
+                    day4.setText(day + " : " + maxtemp+ "/" + mintemp);
+
+                    //for day5 forecast
+
+                    list_max.clear();
+                    list_min.clear();
+                    for(int i=32;i<40;i++){
+                        list_max.add(weatherResponse.list.get(i).getMain().getTempMax());
+                        list_min.add(weatherResponse.list.get(i).getMain().getTempMin());
+                    }
+                    maxtemp=max_temp(list_max);
+                    mintemp=min_temp(list_min);
+
+                    week++;
+                    day=day_of_week(week);
+                    day5.setText(day + " : " + maxtemp+ "/" + mintemp);
 
                 }
             }
@@ -152,6 +234,42 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+    public static String day_of_week(int week){
+        String day="";
+        if(week>7)
+            week=week-7;
 
+        if(week==1)
+            day="Sunday";
+        if(week==2)
+            day="Monday";
+        if(week==3)
+            day="Tuesday";
+        if(week==4)
+            day="Wednesday";
+        if(week==5)
+            day="Thursday";
+        if(week==6)
+            day="Friday";
+        if(week==7)
+            day="Saturday";
+
+
+        return day;
+    }
+
+    public static int max_temp(List<Double> list) {
+        Collections.sort(list);
+        int max=(int) Math.round(list.get(7));
+        max-=273;
+        return max;
+    }
+
+    public static int min_temp(List<Double> list) {
+        Collections.sort(list);
+        int min=(int) Math.round(list.get(0));
+        min-=273;
+        return min;
+    }
 
 }
