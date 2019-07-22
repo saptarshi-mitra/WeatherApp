@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity
 
     private TextView mytest_text;
     private TextView day1,day2,day3,day4,day5;
+    private EditText city_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         day3=findViewById(R.id.weather_day3);
         day4=findViewById(R.id.weather_day4);
         day5=findViewById(R.id.weather_day5);
+        city_name=findViewById(R.id.editText);
 
     }
 
@@ -131,13 +134,15 @@ public class MainActivity extends AppCompatActivity
 
 
     public void getcurrentdata(View view){
+        String string=city_name.getText().toString();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
        WeatherService weatherService=retrofit.create(WeatherService.class);
-        Call<WeatherResponse> call= weatherService.getTemp( id, AppId);
+        //Call<WeatherResponse> call= weatherService.getTemp( id, AppId);
+        Call<WeatherResponse> call= weatherService.getTemp_entry( string, AppId);
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
