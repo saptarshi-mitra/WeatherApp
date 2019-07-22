@@ -137,9 +137,9 @@ public class MainActivity extends AppCompatActivity
                 {
                     WeatherResponse weatherResponse=response.body();
                     assert weatherResponse != null;
-                    StringBuffer stringBuffer=new StringBuffer( "City: " +
-                            weatherResponse.city.getName()+
-                            "Country:"+ weatherResponse.city.getCountry());
+                    StringBuffer stringBuffer=new StringBuffer(
+                            "TEMP: "+weatherResponse.list.get(1).getMain().getTemp());
+
                     String string=stringBuffer.toString();
                     mytest_text.setText(string);
 

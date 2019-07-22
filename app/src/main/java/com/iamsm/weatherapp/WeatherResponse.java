@@ -5,35 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class WeatherResponse {
-
-    @SerializedName("city")
-    public City city;
-    @SerializedName("Clouds")
-    public Clouds clouds;
-    @SerializedName("Coord")
-    public Coord coord;
-    @SerializedName("example")
-    public Example example;
-    @SerializedName("sys")
-    public Sys sys;
-    @SerializedName("main")
-    public Main main;
-    @SerializedName("wind")
-    public Wind wind;
-    @SerializedName("weather")
-    public ArrayList<Weather> weather=new ArrayList<Weather>();
-
-    @SerializedName("dt")
-    public float dt;
-    @SerializedName("id")
-    public int id;
-    @SerializedName("name")
-    public String name;
-    @SerializedName("cod")
-    public float cod;
-
-}
 
 
 class City {
@@ -128,7 +99,7 @@ class Coord {
 
 }
 
-class Example {
+public class WeatherResponse {
 
     @SerializedName("cod")
     @Expose
@@ -141,10 +112,10 @@ class Example {
     private Integer cnt;
     @SerializedName("list")
     @Expose
-    private java.util.List<com.iamsm.weatherapp.List> list = null;
+    public java.util.List<com.iamsm.weatherapp.List> list = null;
     @SerializedName("city")
     @Expose
-    private City city;
+    public City city;
 
     public String getCod() {
         return cod;
@@ -293,19 +264,19 @@ class Main {
     private Double tempMax;
     @SerializedName("pressure")
     @Expose
-    private Integer pressure;
+    private Double pressure;
     @SerializedName("sea_level")
     @Expose
     private Double seaLevel;
     @SerializedName("grnd_level")
     @Expose
-    private Integer grndLevel;
+    private Double grndLevel;
     @SerializedName("humidity")
     @Expose
     private Integer humidity;
     @SerializedName("temp_kf")
     @Expose
-    private Integer tempKf;
+    private Double tempKf;
 
     public Double getTemp() {
         return temp;
@@ -331,11 +302,11 @@ class Main {
         this.tempMax = tempMax;
     }
 
-    public Integer getPressure() {
+    public Double getPressure() {
         return pressure;
     }
 
-    public void setPressure(Integer pressure) {
+    public void setPressure(Double pressure) {
         this.pressure = pressure;
     }
 
@@ -347,11 +318,11 @@ class Main {
         this.seaLevel = seaLevel;
     }
 
-    public Integer getGrndLevel() {
+    public Double getGrndLevel() {
         return grndLevel;
     }
 
-    public void setGrndLevel(Integer grndLevel) {
+    public void setGrndLevel(Double grndLevel) {
         this.grndLevel = grndLevel;
     }
 
@@ -363,11 +334,11 @@ class Main {
         this.humidity = humidity;
     }
 
-    public Integer getTempKf() {
+    public Double getTempKf() {
         return tempKf;
     }
 
-    public void setTempKf(Integer tempKf) {
+    public void setTempKf(Double tempKf) {
         this.tempKf = tempKf;
     }
 
