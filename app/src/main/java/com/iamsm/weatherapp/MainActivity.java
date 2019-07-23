@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity
     private TextView day1,day2,day3,day4,day5;
     private EditText city_name;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
