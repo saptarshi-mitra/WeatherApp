@@ -1,5 +1,6 @@
 package com.iamsm.weatherapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -113,18 +115,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.search) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.forecast_more) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.forecast_less) {
+            Intent intent=new Intent(this,Less_day.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -153,6 +150,23 @@ public class MainActivity extends AppCompatActivity
                     Date now = new Date();
                     Calendar calendar=Calendar.getInstance();
                     calendar.setTime(now);
+                    SimpleDateFormat simpleDate = new SimpleDateFormat("hh:mm:ss");
+                    String time=simpleDate.format(now);
+                    time=time.substring(0,2);
+                    int ac_time=Integer.parseInt(time);
+                    Double temp;
+                    if((ac_time%3)<=1) {
+                        temp=weatherResponse.list.get(1).getMain().getTemp();
+                        temp-=273.0;
+                        int res=(int) Math.round(temp);
+                        mytest_text.setText( res + "");
+                    }
+                    else {
+                        temp=weatherResponse.list.get(2).getMain().getTemp();
+                        temp-=273.0;
+                        int res=(int) Math.round(temp);
+                        mytest_text.setText(res + "");
+                    }
 
                     //for day1 forecast
 
