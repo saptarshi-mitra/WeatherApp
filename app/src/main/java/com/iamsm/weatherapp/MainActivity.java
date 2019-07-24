@@ -57,10 +57,11 @@ public class MainActivity extends AppCompatActivity
 
 
     private TextView mytest_text;
-    private TextView day1, day2, day3, day4, day5, city, country;
-    LocationManager locationManager;
-    static Double lat, lon;
-    String provider;
+    private TextView day1, day2, day3, day4, day5, city, country,latitude,longitude;
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+    static Double lat=0.0, lon;
+    //String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,21 +79,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         //Starting code
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        provider = locationManager.getBestProvider(new Criteria(), false);
-
-        /*if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-
-        }*/
         if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION},0);
 
         }
-        Location location = locationManager.getLastKnownLocation(provider);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
 
 
 
@@ -104,7 +99,9 @@ public class MainActivity extends AppCompatActivity
         day5=findViewById(R.id.weather_day5);
         city=findViewById(R.id.city);
         country=findViewById(R.id.country);
-        getcurrentdata(1);
+        latitude=findViewById(R.id.lat);
+        longitude=findViewById(R.id.lon);
+        getcurrentdata();
     }
 
     @Override
@@ -162,7 +159,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void getcurrentdata(int id){
+    public void getcurrentdata(){
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -199,7 +196,8 @@ public class MainActivity extends AppCompatActivity
                         int res=(int) Math.round(temp);
                         mytest_text.setText(res + "°C");
                     }
-
+                    latitude.setText("Latitude: "+lat);
+                    longitude.setText("Longitude: "+lon);
                     //for day1 forecast
 
                     List<Double> list_max=new ArrayList<>();
@@ -289,6 +287,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
+
+
     public static String day_of_week(int week){
         String day="";
         if(week>7)
@@ -329,25 +330,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        locationManager.removeUpdates(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION},0);
-
-        }
-        locationManager.requestLocationUpdates(provider,400,1,this);
-        getcurrentdata(2);
-    }
 
     @Override
     public void onLocationChanged(Location location) {
