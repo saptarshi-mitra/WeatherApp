@@ -14,4 +14,7 @@ public interface WeatherService {
     @GET("data/2.5/forecast?")
     Call<WeatherResponse> getTemp_entry(@Query("q") String q, @Query("APPID") String appid);
 
+    @GET("data/2.5/forecast?")
+    Call<WeatherResponse> getTemp_coord(@Query("lat") Double lat, @Query("lon") Double lon, @Query("APPID") String appid);
+
 }

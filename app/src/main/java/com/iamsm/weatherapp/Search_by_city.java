@@ -1,20 +1,12 @@
 package com.iamsm.weatherapp;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+
 
 
 import android.view.View;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -48,66 +40,35 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
-
-    public static String BaseUrl = "https://api.openweathermap.org/";
-    public static String AppId = "4d99b523e2324aec5e0614b53d564e1d";
-    public static int id = 1275004;
+public class Search_by_city extends AppCompatActivity
+        //implements NavigationView.OnNavigationItemSelectedListener{
+{
+    public static String BaseUrl="https://api.openweathermap.org/";
+    public static String AppId="4d99b523e2324aec5e0614b53d564e1d";
+    public static int id=1275004;
 
 
     private TextView mytest_text;
-    private TextView day1, day2, day3, day4, day5, city, country;
-    LocationManager locationManager;
-    static Double lat, lon;
-    String provider;
+    private TextView day1,day2,day3,day4,day5;
+    private EditText city_name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        setContentView(R.layout.searchbycity);
         //Starting code
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        provider = locationManager.getBestProvider(new Criteria(), false);
-
-        /*if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-
-        }*/
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION},0);
-
-        }
-        Location location = locationManager.getLastKnownLocation(provider);
-
-
-
         mytest_text=findViewById(R.id.curr_weather);
         day1=findViewById(R.id.weather_day1);
         day2=findViewById(R.id.weather_day2);
         day3=findViewById(R.id.weather_day3);
         day4=findViewById(R.id.weather_day4);
         day5=findViewById(R.id.weather_day5);
-        city=findViewById(R.id.city);
-        country=findViewById(R.id.country);
-        getcurrentdata(1);
+        city_name=findViewById(R.id.editText);
+
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -159,19 +120,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+    }*/
 
-
-    public void getcurrentdata(int id){
+    public void getcurrentdata(View view){
+        String string=city_name.getText().toString();
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-       WeatherService weatherService=retrofit.create(WeatherService.class);
+        WeatherService weatherService=retrofit.create(WeatherService.class);
         //Call<WeatherResponse> call= weatherService.getTemp( id, AppId);
-        //Call<WeatherResponse> call= weatherService.getTemp_entry( string, AppId);
-        Call<WeatherResponse> call= weatherService.getTemp_coord( lat,lon, AppId);
+        Call<WeatherResponse> call= weatherService.getTemp_entry( string, AppId);
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
@@ -191,13 +151,13 @@ public class MainActivity extends AppCompatActivity
                         temp=weatherResponse.list.get(1).getMain().getTemp();
                         temp-=273.0;
                         int res=(int) Math.round(temp);
-                        mytest_text.setText( res + "°C");
+                        mytest_text.setText( res + "");
                     }
                     else {
                         temp=weatherResponse.list.get(2).getMain().getTemp();
                         temp-=273.0;
                         int res=(int) Math.round(temp);
-                        mytest_text.setText(res + "°C");
+                        mytest_text.setText(res + "");
                     }
 
                     //for day1 forecast
@@ -214,7 +174,7 @@ public class MainActivity extends AppCompatActivity
                     int week=calendar.get(calendar.DAY_OF_WEEK);
                     String day=day_of_week(week);
                     //for day1 forecast
-                    day1.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
+                    day1.setText(day + " : " + maxtemp+ "/" + mintemp);
 
                     //for day2 forecast
 
@@ -229,7 +189,7 @@ public class MainActivity extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day2.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
+                    day2.setText(day + " : " + maxtemp+ "/" + mintemp);
 
                     //for day3 forecast
 
@@ -244,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day3.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
+                    day3.setText(day + " : " + maxtemp+ "/" + mintemp);
 
                     //for day4 forecast
 
@@ -259,7 +219,7 @@ public class MainActivity extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day4.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
+                    day4.setText(day + " : " + maxtemp+ "/" + mintemp);
 
                     //for day5 forecast
 
@@ -274,11 +234,7 @@ public class MainActivity extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day5.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
-
-
-                    city.setText(weatherResponse.city.getName());
-                    country.setText(weatherResponse.city.getCountry());
+                    day5.setText(day + " : " + maxtemp+ "/" + mintemp);
 
                 }
             }
@@ -327,47 +283,4 @@ public class MainActivity extends AppCompatActivity
         return min;
     }
 
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        locationManager.removeUpdates(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION},0);
-
-        }
-        locationManager.requestLocationUpdates(provider,400,1,this);
-        getcurrentdata(2);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        lat=location.getLatitude();
-        lon=location.getLongitude();
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
 }

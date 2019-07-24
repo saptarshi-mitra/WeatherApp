@@ -82,22 +82,22 @@ public class Less_day extends AppCompatActivity {
                             Date now=new Date();
                             cal.setTime(now);
                             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                        //    System.out.println( sdf.format(cal.getTime()));
+                            //    System.out.println( sdf.format(cal.getTime()));
                             String time=sdf.format(now);
                             time=time.substring(0,2);
                             int time_int=Integer.parseInt(time);
                             if(time_int%3<=1)
                             {
-                               Double currentTemp= Double.valueOf(Math.round(weatherResponse.list.get(1).getMain().getTemp()-273.0));
-                               String setTemp=currentTemp.toString();
-                               currData.setText(setTemp);
+                                Double currentTemp= Double.valueOf(Math.round(weatherResponse.list.get(1).getMain().getTemp()-273.0));
+                                String setTemp=currentTemp.toString();
+                                currData.setText(setTemp+ "°C");
                             }
                             else
-                                {
-                                    Double currentTemp= Double.valueOf(Math.round(weatherResponse.list.get(2).getMain().getTemp()-273.0));
-                                    String setTemp1=currentTemp.toString();
-                                    currData.setText(setTemp1);
-                                }
+                            {
+                                Double currentTemp= Double.valueOf(Math.round(weatherResponse.list.get(2).getMain().getTemp()-273.0));
+                                String setTemp1=currentTemp.toString();
+                                currData.setText(setTemp1+"°C");
+                            }
                             List<Double> max_temp=new ArrayList<>();
                             List<Double> min_temp=new ArrayList<>();
                             List<Integer> avg_hum=new ArrayList<>();
@@ -122,10 +122,10 @@ public class Less_day extends AppCompatActivity {
                             int week=cal.get(cal.DAY_OF_WEEK);
                             String day=getDayOfWeek(week);
                             day1.setText(day);
-                            day1Max.setText(x);
-                            day1Min.setText(x1);
-                            day1Pressure.setText(x2);
-                            day1Humidity.setText(x3);
+                            day1Max.setText("Max: "+x+ "°C");
+                            day1Min.setText("Min: "+x1+ "°C");
+                            day1Pressure.setText("Humidity: "+x2+"%");
+                            day1Humidity.setText("Pressure :"+x3);
 
                             max_temp.clear();
                             min_temp.clear();
@@ -150,10 +150,10 @@ public class Less_day extends AppCompatActivity {
                             week++;
                             day = getDayOfWeek(week);
                             day2.setText(day);
-                            day2Max.setText(x);
-                            day2Min.setText(x1);
-                            day2Pressure.setText(x2);
-                            day2Humidity.setText(x3);
+                            day2Max.setText("Max: "+x+ "°C");
+                            day2Min.setText("Min: "+x1+ "°C");
+                            day2Pressure.setText("Humidity: "+x2+"%");
+                            day2Humidity.setText("Pressure: "+x3);
                             max_temp.clear();
                             min_temp.clear();
                             avg_hum.clear();
@@ -177,10 +177,10 @@ public class Less_day extends AppCompatActivity {
                             week++;
                             day = getDayOfWeek(week);
                             day3.setText(day);
-                            day3Max.setText(x);
-                            day3Min.setText(x1);
-                            day3Pressure.setText(x2);
-                            day3Humidity.setText(x3);
+                            day3Max.setText("Max: "+x+ "°C");
+                            day3Min.setText("Min: "+x1+ "°C");
+                            day3Pressure.setText("Humidity: "+x2+"%");
+                            day3Humidity.setText("Pressure: "+x3);
                             max_temp.clear();
                             min_temp.clear();
                             avg_hum.clear();
@@ -192,7 +192,7 @@ public class Less_day extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                            currData.setText(t.getMessage());
+                        currData.setText(t.getMessage());
 
                     }
                 });
@@ -214,7 +214,7 @@ public class Less_day extends AppCompatActivity {
     public static double getMinTemp(List<Double> min_temp)
     {
         Collections.sort(min_temp);
-        double t=Math.round(min_temp.get(7));
+        double t=Math.round(min_temp.get(0));
         return t;
     }
     public static String getDayOfWeek(int week)
