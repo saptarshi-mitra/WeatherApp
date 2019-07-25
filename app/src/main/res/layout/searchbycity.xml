@@ -99,7 +99,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/curr_weather"
-        app:layout_constraintVertical_bias="0.716" />
+        app:layout_constraintVertical_bias="0.683" />
 
     <TextView
         android:id="@+id/weather_day4"
@@ -119,7 +119,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/curr_weather"
-        app:layout_constraintVertical_bias="0.824" />
+        app:layout_constraintVertical_bias="0.808" />
 
     <TextView
         android:id="@+id/weather_day5"

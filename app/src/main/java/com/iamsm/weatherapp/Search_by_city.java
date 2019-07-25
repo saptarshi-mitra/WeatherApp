@@ -151,13 +151,13 @@ public class Search_by_city extends AppCompatActivity
                         temp=weatherResponse.list.get(1).getMain().getTemp();
                         temp-=273.0;
                         int res=(int) Math.round(temp);
-                        mytest_text.setText( res + "");
+                        mytest_text.setText( res + "°C");
                     }
                     else {
                         temp=weatherResponse.list.get(2).getMain().getTemp();
                         temp-=273.0;
                         int res=(int) Math.round(temp);
-                        mytest_text.setText(res + "");
+                        mytest_text.setText(res + "°C");
                     }
 
                     //for day1 forecast
@@ -174,7 +174,7 @@ public class Search_by_city extends AppCompatActivity
                     int week=calendar.get(calendar.DAY_OF_WEEK);
                     String day=day_of_week(week);
                     //for day1 forecast
-                    day1.setText(day + " : " + maxtemp+ "/" + mintemp);
+                    day1.setText(day + " : " + maxtemp+ "°C/" + mintemp+"°C");
 
                     //for day2 forecast
 
@@ -189,7 +189,7 @@ public class Search_by_city extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day2.setText(day + " : " + maxtemp+ "/" + mintemp);
+                    day2.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
 
                     //for day3 forecast
 
@@ -204,7 +204,7 @@ public class Search_by_city extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day3.setText(day + " : " + maxtemp+ "/" + mintemp);
+                    day3.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
 
                     //for day4 forecast
 
@@ -219,7 +219,7 @@ public class Search_by_city extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day4.setText(day + " : " + maxtemp+ "/" + mintemp);
+                    day4.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
 
                     //for day5 forecast
 
@@ -234,7 +234,7 @@ public class Search_by_city extends AppCompatActivity
 
                     week++;
                     day=day_of_week(week);
-                    day5.setText(day + " : " + maxtemp+ "/" + mintemp);
+                    day5.setText(day + " : " + maxtemp+ "°C/" + mintemp +"°C");
 
                 }
             }

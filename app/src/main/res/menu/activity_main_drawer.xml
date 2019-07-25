@@ -6,14 +6,13 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/search"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_search_black_24dp"
             android:title="Search" />
-        <item
-            android:id="@+id/forecast_more"
-            android:title="5-day forecast" />
+
         <item
             android:id="@+id/forecast_less"
-            android:title="3-day forecast" />
+            android:icon="@drawable/detailed_info_icon"
+            android:title="Deatiled info" />
 
     </group>
 

@@ -28,6 +28,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.view.Menu;
 import android.widget.Button;
@@ -49,7 +50,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static String BaseUrl = "https://api.openweathermap.org/";
     public static String AppId = "4d99b523e2324aec5e0614b53d564e1d";
@@ -58,10 +59,10 @@ public class MainActivity extends AppCompatActivity
 
     private TextView mytest_text;
     private TextView day1, day2, day3, day4, day5, city, country,latitude,longitude;
-    protected LocationManager locationManager;
-    protected LocationListener locationListener;
-    static Double lat=0.0, lon;
-    //String provider;
+
+    public Double lat, lon;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,20 +78,8 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        //Starting code
-
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION},0);
-
-        }
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
-
-
-
+        lat=22.5726;
+        lon=88.3639;
         mytest_text=findViewById(R.id.curr_weather);
         day1=findViewById(R.id.weather_day1);
         day2=findViewById(R.id.weather_day2);
@@ -101,6 +90,7 @@ public class MainActivity extends AppCompatActivity
         country=findViewById(R.id.country);
         latitude=findViewById(R.id.lat);
         longitude=findViewById(R.id.lon);
+        //startService(new Intent(this, My_service.class));
         getcurrentdata();
     }
 
@@ -146,8 +136,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent=new Intent(this,Search_by_city.class);
             startActivity(intent);
             // Handle the camera action
-        } else if (id == R.id.forecast_more) {
-
         } else if (id == R.id.forecast_less) {
             Intent intent=new Intent(this,Less_day.class);
             startActivity(intent);
@@ -164,9 +152,12 @@ public class MainActivity extends AppCompatActivity
                 .baseUrl(BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
        WeatherService weatherService=retrofit.create(WeatherService.class);
-        //Call<WeatherResponse> call= weatherService.getTemp( id, AppId);
+       startService(new Intent(this, My_service.class));
+       My_service service=new My_service();
+       //lat=service.getLat();
+       //lon=service.getLon();
+       //Call<WeatherResponse> call= weatherService.getTemp( id, AppId);
         //Call<WeatherResponse> call= weatherService.getTemp_entry( string, AppId);
         Call<WeatherResponse> call= weatherService.getTemp_coord( lat,lon, AppId);
         call.enqueue(new Callback<WeatherResponse>() {
@@ -196,8 +187,8 @@ public class MainActivity extends AppCompatActivity
                         int res=(int) Math.round(temp);
                         mytest_text.setText(res + "°C");
                     }
-                    latitude.setText("Latitude: "+lat);
-                    longitude.setText("Longitude: "+lon);
+                    latitude.setText("Latitude: "+ weatherResponse.getCity().getCoord().getLat());
+                    longitude.setText("Longitude: "+ weatherResponse.getCity().getCoord().getLon());
                     //for day1 forecast
 
                     List<Double> list_max=new ArrayList<>();
@@ -289,7 +280,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     public static String day_of_week(int week){
         String day="";
         if(week>7)
@@ -329,27 +319,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        lat=location.getLatitude();
-        lon=location.getLongitude();
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
 }
+
+

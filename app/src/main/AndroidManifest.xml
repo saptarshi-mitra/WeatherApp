@@ -50,6 +50,8 @@
             </intent-filter>-->
         </activity>
 
+        <service android:enabled="true" android:name=".My_service"></service>
+
     </application>
 
 </manifest>
